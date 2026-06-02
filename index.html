@@ -3,17 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>MTS SMM Admin - Fast Dashboard</title>
+    <title>MTS SMM Admin - Complete Control</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background: #0a0f1c; color: #eef2ff; }
-        
-        /* Fast loading - minimal animations */
         .admin-container { display: flex; min-height: 100vh; }
-        
-        /* Sidebar - Fixed width, no animations */
         .admin-sidebar {
             width: 260px;
             background: #0d1425;
@@ -24,16 +20,12 @@
             overflow-y: auto;
             z-index: 100;
         }
-        
-        /* Main Content */
         .admin-main {
             flex: 1;
             margin-left: 260px;
             padding: 20px;
             background: #0a0f1c;
         }
-        
-        /* Quick Stats Cards */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -49,11 +41,9 @@
         .stat-card i { font-size: 28px; color: #2b6ef0; margin-bottom: 12px; display: block; }
         .stat-card h2 { font-size: 28px; font-weight: 700; }
         .stat-card p { color: #94a3b8; font-size: 13px; margin-top: 5px; }
-        
-        /* Card Grid for Data */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 16px;
             margin-top: 16px;
         }
@@ -73,18 +63,16 @@
         .card-item {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
+            padding: 8px 0;
             border-bottom: 1px solid #1e293b;
         }
         .card-item:last-child { border-bottom: none; }
         .card-label { color: #94a3b8; font-size: 13px; }
         .card-value { font-weight: 500; }
-        
-        /* Buttons */
         .btn {
             background: #2b6ef0;
             border: none;
-            padding: 6px 14px;
+            padding: 8px 16px;
             border-radius: 20px;
             color: white;
             cursor: pointer;
@@ -96,9 +84,6 @@
         .btn-danger { background: #dc2626; }
         .btn-success { background: #10b981; }
         .btn-warning { background: #f59e0b; }
-        .btn-outline { background: transparent; border: 1px solid #2b6ef0; }
-        
-        /* Forms - Fast loading */
         input, select, textarea {
             background: #111827;
             border: 1px solid #1e293b;
@@ -108,10 +93,11 @@
             width: 100%;
             outline: none;
             font-size: 14px;
+            margin-bottom: 10px;
         }
-        input:focus { border-color: #2b6ef0; }
-        
-        /* Navigation */
+        input:focus, select:focus { border-color: #2b6ef0; }
+        .form-row { display: flex; gap: 10px; margin-bottom: 10px; }
+        .form-row > * { flex: 1; }
         .admin-nav-btn {
             background: transparent;
             border: none;
@@ -123,15 +109,12 @@
             width: 100%;
             margin: 2px 0;
             font-size: 14px;
-            transition: 0.1s;
         }
         .admin-nav-btn:hover, .admin-nav-btn.active {
             background: #2b6ef0;
             color: white;
         }
         .admin-nav-btn i { width: 24px; margin-right: 10px; }
-        
-        /* Status Badges */
         .badge {
             padding: 2px 8px;
             border-radius: 20px;
@@ -144,23 +127,17 @@
         .badge-rejected { background: #dc2626; }
         .badge-active { background: #10b981; }
         .badge-blocked { background: #dc2626; }
-        
-        /* Tab Buttons */
         .tab-buttons { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
         .tab-btn {
             background: #111827;
-            padding: 6px 16px;
+            padding: 8px 20px;
             border-radius: 20px;
             cursor: pointer;
             font-size: 13px;
         }
         .tab-btn.active { background: #2b6ef0; }
-        
-        /* Hidden elements */
-        .service-tab, .join-tab { display: none; }
-        .service-tab.active, .join-tab.active { display: block; }
-        
-        /* Modal */
+        .service-tab { display: none; }
+        .service-tab.active { display: block; }
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -178,10 +155,9 @@
             border-radius: 20px;
             padding: 24px;
             width: 90%;
-            max-width: 450px;
+            max-width: 500px;
             border: 1px solid #2b6ef0;
         }
-        
         .toast {
             position: fixed;
             bottom: 20px;
@@ -193,9 +169,9 @@
             border-left: 3px solid #10b981;
             font-size: 13px;
         }
-        
+        .checkbox-group { display: flex; gap: 15px; flex-wrap: wrap; margin: 10px 0; }
+        .checkbox-group label { display: flex; align-items: center; gap: 5px; font-size: 13px; }
         .menu-toggle { display: none; }
-        
         @media (max-width: 768px) {
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .admin-sidebar { transform: translateX(-100%); position: fixed; z-index: 200; }
@@ -259,10 +235,9 @@
 </div>
 
 <script>
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXvgaj06YviIbHlKvM7FmLH6y_FvYG6kcBv9TgVuelbNp6sjm187ABRnXFTlPM4e_-Jg/exec";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxiF6JdVsQ_3RxNn2F4iF08_t72wTUlYFk_akL-l7xnfhlaN7k9FhAgNSUiU6r4UdX3OQ/exec";
     
     let adminToken = localStorage.getItem("adminToken");
-    let cachedData = {};
     
     function showToast(msg, isError = false) {
         let toast = document.createElement('div');
@@ -324,7 +299,7 @@
     });
     
     async function loadSection(section) {
-        document.getElementById("dynamicContent").innerHTML = '<div style="text-align:center;padding:40px;"><i class="fas fa-spinner fa-spin"></i></div>';
+        document.getElementById("dynamicContent").innerHTML = '<div style="text-align:center;padding:40px;"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
         switch(section) {
             case "dashboard": await loadDashboard(); break;
             case "users": await loadUsers(); break;
@@ -409,27 +384,198 @@
     
     window.updateOrderStatus = async (id) => { await api("adminUpdateOrderStatus", { orderId: id, status: document.getElementById(`status_${id}`).value }); showToast("Updated"); loadOrders(); };
     
+    // FIXED: Complete Services Management with all fields
     async function loadServices() {
         let res = await api("adminGetServices");
+        console.log("Services API Response:", res);
         let services = res.services || [];
+        
         let html = `
-            <h3><i class="fas fa-cogs"></i> Services (${services.length})</h3>
-            <div class="tab-buttons"><button class="tab-btn active" onclick="showTab('add')">Add</button><button class="tab-btn" onclick="showTab('list')">List</button><button class="tab-btn" onclick="showTab('edit')">Edit</button><button class="tab-btn" onclick="showTab('delete')">Delete</button></div>
-            <div id="addTab" class="service-tab active"><div class="data-card"><div class="card-header">Add Service</div><div class="card-body"><input id="servName" placeholder="Name"><input id="servPlatform" placeholder="Platform"><input id="servRate" type="number" placeholder="Rate (PKR)"><div class="form-row" style="display:flex;gap:10px;"><input id="servMin" placeholder="Min"><input id="servMax" placeholder="Max"></div><textarea id="servDesc" placeholder="Description" rows="2"></textarea><label><input type="checkbox" id="servPer1k"> Per 1k</label><button class="btn btn-success" onclick="addService()">Save</button></div></div></div>
-            <div id="listTab" class="service-tab"><div class="cards-grid">${services.map(s => `<div class="data-card"><div class="card-header">${s.Name}</div><div class="card-body"><div class="card-item"><span class="card-label">Platform</span><span>${s.Platform}</span></div><div class="card-item"><span class="card-label">Rate</span><span>₨ ${s.Rate} ${s.Per1k ? '/1000' : '/unit'}</span></div><div class="card-item"><span class="card-label">Min/Max</span><span>${s.MinQty} - ${s.MaxQty}</span></div></div></div>`).join('')}</div></div>
-            <div id="editTab" class="service-tab"><div class="data-card"><div class="card-header">Edit Service</div><div class="card-body"><select id="editServiceSelect">${services.map(s => `<option value="${s.ServiceId}">${s.Name}</option>`).join('')}</select><div id="editFields"></div><button class="btn btn-warning" onclick="updateService()">Update</button></div></div></div>
-            <div id="deleteTab" class="service-tab"><div class="data-card"><div class="card-header">Delete Service</div><div class="card-body"><select id="deleteServiceSelect">${services.map(s => `<option value="${s.ServiceId}">${s.Name}</option>`).join('')}</select><button class="btn btn-danger" onclick="deleteService()">Delete</button></div></div></div>`;
+            <h3><i class="fas fa-cogs"></i> Service Management (${services.length} services)</h3>
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="showServiceTab('add')">➕ Add Service</button>
+                <button class="tab-btn" onclick="showServiceTab('list')">📋 Service List</button>
+                <button class="tab-btn" onclick="showServiceTab('edit')">✏️ Edit Service</button>
+                <button class="tab-btn" onclick="showServiceTab('delete')">🗑️ Delete Service</button>
+            </div>
+            
+            <!-- Add Service Tab -->
+            <div id="addServiceTab" class="service-tab active">
+                <div class="data-card">
+                    <div class="card-header">Add New Service</div>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <input id="servName" placeholder="Service Name *">
+                            <input id="servPlatform" placeholder="Platform (e.g., Instagram) *">
+                        </div>
+                        <div class="form-row">
+                            <input id="servRate" type="number" placeholder="Rate (PKR) *">
+                            <input id="servMin" type="number" placeholder="Min Quantity">
+                            <input id="servMax" type="number" placeholder="Max Quantity">
+                        </div>
+                        <input id="servDelivery" placeholder="Delivery Time (e.g., 1-2 hours)">
+                        <textarea id="servDesc" placeholder="Service Description" rows="3"></textarea>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" id="servPer1k"> Per 1k (Price for 1000 units)</label>
+                            <label><input type="checkbox" id="servIsAccount"> Is Account (Requires Email)</label>
+                            <label><input type="checkbox" id="servRequireLink"> Require Link</label>
+                            <label><input type="checkbox" id="servCustomComments"> Custom Comments</label>
+                            <label><input type="checkbox" id="servRefill"> Refill Available</label>
+                        </div>
+                        <button class="btn btn-success" onclick="addService()">💾 Save Service</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- List Service Tab -->
+            <div id="listServiceTab" class="service-tab">
+                <div class="cards-grid" id="servicesListContainer">
+                    ${services.map(s => `
+                        <div class="data-card">
+                            <div class="card-header">${s.Name}</div>
+                            <div class="card-body">
+                                <div class="card-item"><span class="card-label">Platform</span><span>${s.Platform}</span></div>
+                                <div class="card-item"><span class="card-label">Rate</span><span>₨ ${s.Rate} ${s.Per1k ? '/1000' : '/unit'}</span></div>
+                                <div class="card-item"><span class="card-label">Min/Max</span><span>${s.MinQty} - ${s.MaxQty}</span></div>
+                                <div class="card-item"><span class="card-label">Delivery</span><span>${s.DeliveryTime || 'N/A'}</span></div>
+                                <div class="card-item"><span class="card-label">Flags</span><span>${s.Per1k ? 'Per1k ' : ''}${s.IsAccount ? 'Account ' : ''}${s.RequireLink ? 'Link ' : ''}${s.CustomComments ? 'Comments ' : ''}</span></div>
+                            </div>
+                        </div>
+                    `).join('') || '<p>No services found. Click "Add Service" to create one.</p>'}
+                </div>
+            </div>
+            
+            <!-- Edit Service Tab -->
+            <div id="editServiceTab" class="service-tab">
+                <div class="data-card">
+                    <div class="card-header">Edit Service</div>
+                    <div class="card-body">
+                        <select id="editServiceSelect" style="margin-bottom: 15px;">
+                            <option value="">-- Select a service to edit --</option>
+                            ${services.map(s => `<option value="${s.ServiceId}">${s.Name} (${s.Platform})</option>`).join('')}
+                        </select>
+                        <div id="editFields"></div>
+                        <button class="btn btn-warning" onclick="updateService()">✏️ Update Service</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Delete Service Tab -->
+            <div id="deleteServiceTab" class="service-tab">
+                <div class="data-card">
+                    <div class="card-header">Delete Service</div>
+                    <div class="card-body">
+                        <select id="deleteServiceSelect" style="margin-bottom: 15px;">
+                            <option value="">-- Select a service to delete --</option>
+                            ${services.map(s => `<option value="${s.ServiceId}">${s.Name} (${s.Platform})</option>`).join('')}
+                        </select>
+                        <button class="btn btn-danger" onclick="deleteService()">🗑️ Delete Permanently</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
         document.getElementById("dynamicContent").innerHTML = html;
+        
+        // Edit service select handler
         document.getElementById("editServiceSelect")?.addEventListener("change", (e) => {
-            let s = services.find(s => s.ServiceId === e.target.value);
-            if(s) document.getElementById("editFields").innerHTML = `<input id="editName" value="${s.Name}"><input id="editRate" value="${s.Rate}"><input id="editMin" value="${s.MinQty}"><input id="editMax" value="${s.MaxQty}"><textarea id="editDesc">${s.Description || ''}</textarea>`;
+            let service = services.find(s => s.ServiceId === e.target.value);
+            if(service) {
+                document.getElementById("editFields").innerHTML = `
+                    <div class="form-row"><input id="editName" value="${service.Name.replace(/"/g, '&quot;')}" placeholder="Service Name"></div>
+                    <div class="form-row"><input id="editPlatform" value="${service.Platform.replace(/"/g, '&quot;')}" placeholder="Platform"></div>
+                    <div class="form-row">
+                        <input id="editRate" type="number" value="${service.Rate}" placeholder="Rate (PKR)">
+                        <input id="editMin" type="number" value="${service.MinQty}" placeholder="Min Quantity">
+                        <input id="editMax" type="number" value="${service.MaxQty}" placeholder="Max Quantity">
+                    </div>
+                    <input id="editDelivery" value="${service.DeliveryTime || ''}" placeholder="Delivery Time">
+                    <textarea id="editDesc" placeholder="Description" rows="3">${service.Description || ''}</textarea>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="editPer1k" ${service.Per1k ? 'checked' : ''}> Per 1k</label>
+                        <label><input type="checkbox" id="editIsAccount" ${service.IsAccount ? 'checked' : ''}> Is Account</label>
+                        <label><input type="checkbox" id="editRequireLink" ${service.RequireLink ? 'checked' : ''}> Require Link</label>
+                        <label><input type="checkbox" id="editCustomComments" ${service.CustomComments ? 'checked' : ''}> Custom Comments</label>
+                    </div>
+                `;
+            }
         });
     }
     
-    window.showTab = (tab) => { document.querySelectorAll('.service-tab').forEach(t => t.classList.remove('active')); document.getElementById(`${tab}Tab`).classList.add('active'); };
-    window.addService = async () => { await api("adminAddService", { name: document.getElementById("servName").value, platform: document.getElementById("servPlatform").value, rate: parseFloat(document.getElementById("servRate").value), minQty: parseInt(document.getElementById("servMin").value)||1, maxQty: parseInt(document.getElementById("servMax").value)||10000, description: document.getElementById("servDesc").value, per1k: document.getElementById("servPer1k").checked }); showToast("Added"); loadServices(); };
-    window.updateService = async () => { await api("adminEditService", { serviceId: document.getElementById("editServiceSelect").value, name: document.getElementById("editName").value, rate: parseFloat(document.getElementById("editRate").value), minQty: parseInt(document.getElementById("editMin").value), maxQty: parseInt(document.getElementById("editMax").value), description: document.getElementById("editDesc").value }); showToast("Updated"); loadServices(); };
-    window.deleteService = async () => { if(confirm("Delete?")) { await api("adminDeleteService", { serviceId: document.getElementById("deleteServiceSelect").value }); showToast("Deleted"); loadServices(); } };
+    window.showServiceTab = (tab) => {
+        document.querySelectorAll('.service-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(`${tab}ServiceTab`).classList.add('active');
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+    };
+    
+    window.addService = async () => {
+        let payload = {
+            name: document.getElementById("servName").value,
+            platform: document.getElementById("servPlatform").value,
+            rate: parseFloat(document.getElementById("servRate").value),
+            minQty: parseInt(document.getElementById("servMin").value) || 1,
+            maxQty: parseInt(document.getElementById("servMax").value) || 10000,
+            deliveryTime: document.getElementById("servDelivery").value,
+            description: document.getElementById("servDesc").value,
+            per1k: document.getElementById("servPer1k").checked,
+            isAccount: document.getElementById("servIsAccount").checked,
+            requireLink: document.getElementById("servRequireLink").checked,
+            customComments: document.getElementById("servCustomComments").checked,
+            refill: document.getElementById("servRefill").checked
+        };
+        if (!payload.name || !payload.platform || !payload.rate) {
+            showToast("Please fill required fields (Name, Platform, Rate)", true);
+            return;
+        }
+        let res = await api("adminAddService", payload);
+        if (res.success) {
+            showToast("Service added successfully");
+            loadServices();
+        } else {
+            showToast(res.error || "Failed to add service", true);
+        }
+    };
+    
+    window.updateService = async () => {
+        let serviceId = document.getElementById("editServiceSelect").value;
+        if (!serviceId) { showToast("Select a service to edit", true); return; }
+        let data = {
+            serviceId: serviceId,
+            name: document.getElementById("editName").value,
+            platform: document.getElementById("editPlatform").value,
+            rate: parseFloat(document.getElementById("editRate").value),
+            minQty: parseInt(document.getElementById("editMin").value),
+            maxQty: parseInt(document.getElementById("editMax").value),
+            deliveryTime: document.getElementById("editDelivery").value,
+            description: document.getElementById("editDesc").value,
+            per1k: document.getElementById("editPer1k")?.checked || false,
+            isAccount: document.getElementById("editIsAccount")?.checked || false,
+            requireLink: document.getElementById("editRequireLink")?.checked || false,
+            customComments: document.getElementById("editCustomComments")?.checked || false
+        };
+        let res = await api("adminEditService", data);
+        if (res.success) {
+            showToast("Service updated successfully");
+            loadServices();
+        } else {
+            showToast(res.error || "Failed to update", true);
+        }
+    };
+    
+    window.deleteService = async () => {
+        let serviceId = document.getElementById("deleteServiceSelect").value;
+        if (!serviceId) { showToast("Select a service to delete", true); return; }
+        if (confirm("Are you sure you want to delete this service? This action cannot be undone.")) {
+            let res = await api("adminDeleteService", { serviceId });
+            if (res.success) {
+                showToast("Service deleted");
+                loadServices();
+            } else {
+                showToast(res.error || "Failed to delete", true);
+            }
+        }
+    };
     
     async function loadPaymentMethods() {
         let res = await api("getPaymentMethods");
@@ -502,8 +648,8 @@
         document.getElementById("dynamicContent").innerHTML = `
             <h3><i class="fas fa-user-shield"></i> Admin Settings</h3>
             <div class="cards-grid">
-                <div class="data-card"><div class="card-header">Change Password</div><div class="card-body"><input type="password" id="curPass" placeholder="Current"><input type="password" id="newPass" placeholder="New"><input type="password" id="conPass" placeholder="Confirm"><button class="btn" onclick="changePass()">Update</button></div></div>
-                <div class="data-card"><div class="card-header">Add Admin</div><div class="card-body"><input type="email" id="newAdminEmail" placeholder="Email"><input type="password" id="newAdminPass" placeholder="Password"><button class="btn btn-success" onclick="addAdmin()">Add</button></div></div>
+                <div class="data-card"><div class="card-header">Change Password</div><div class="card-body"><input type="password" id="curPass" placeholder="Current Password"><input type="password" id="newPass" placeholder="New Password"><input type="password" id="conPass" placeholder="Confirm Password"><button class="btn" onclick="changePass()">Update</button></div></div>
+                <div class="data-card"><div class="card-header">Add New Admin</div><div class="card-body"><input type="email" id="newAdminEmail" placeholder="Email"><input type="password" id="newAdminPass" placeholder="Password"><button class="btn btn-success" onclick="addAdmin()">Add Admin</button></div></div>
             </div>`;
     }
     
@@ -514,6 +660,7 @@
         document.getElementById("loginScreen").style.display = "none";
         document.getElementById("adminContent").style.display = "block";
         loadDashboard();
+        document.querySelector(".admin-nav-btn[data-section='dashboard']").classList.add("active");
     }
 </script>
 </body>
